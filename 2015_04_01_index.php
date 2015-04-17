@@ -205,7 +205,6 @@ header ("Pragma: no-cache");
 		echo $mod_skip = ceil($i/2000);
 		echo "<br>";
 		
-
 		//echo $query_first_plot_VA_MAG="SELECT `VA_MAG` FROM `table_name` WHERE `Date_Table`>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "'";
 		echo $query_first_plot_VA_MAG="SET @row := 0 (SELECT * FROM (SELECT @row := @row + 1 AS rownum, VA_MAG FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)";
 		
@@ -389,7 +388,7 @@ header ("Pragma: no-cache");
 						]
 					},
 
-				data:  [ <?php $reversedata_VA_MAG = array_reverse($datagraph_VA_MAG); echo join($reversedata_VA_MAG, ',') ?> ]
+				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
 			},
 			{
 
@@ -404,7 +403,7 @@ header ("Pragma: no-cache");
 						]
 					},
 
-				data:  [ <?php $reversedata_P = array_reverse($datagraph_P); echo join($reversedata_P, ',') ?> ]
+				data:  [ <?php echo join($datagraph_P, ',') ?> ]
 			}
 			
 						]
