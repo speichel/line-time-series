@@ -82,7 +82,16 @@ header ("Pragma: no-cache");
 	text-transform: uppercase;
 	text-align: left;
 	}
-	</style>
+	
+.hide {
+	position:absolute;
+	top:-0px;
+	left:-0px;
+	width:0px;
+	height:0px;
+	opacity:0;
+	}
+</style>
 
 	<?php   	
 	set_time_limit(60); //60 seconds = 1 minute
@@ -113,7 +122,11 @@ header ("Pragma: no-cache");
 	$file_prepped_for_changing = date('Y-m-d_') . $hour . date('-i-s')  .  ".txt";
 	//END - The follow code is all for naming a file the current date and time
 	
-	$automatically_populated_textfile = file_get_contents("C:\Program Files (x86)\Ampps\www\Highchart\examples\line-time-series\BigBlueRAW.txt");  //this will be the raw file in the future, hopefully automatically saved in some location
+	$automatically_populated_textfile = file_get_contents("../../examples/line-time-series/BigBlueRAW.txt");  //this will be the raw file in the future, hopefully automatically saved in some location
+	//define('DIRECTORY_SEPARATOR','//');
+	//$path='uploads'.DIRECTORY_SEPARATOR;
+
+	$file_prepped_for_changing =  '../../examples/line-time-series/uploads/' . $file_prepped_for_changing; //$path . $file_prepped_for_changing;
 	file_put_contents($file_prepped_for_changing, $automatically_populated_textfile); //putting the contents in the file saved as today's date and current time stamp
 	
 	$lines = file($file_prepped_for_changing);
@@ -760,13 +773,14 @@ header ("Pragma: no-cache");
 					</form>
 					
 				</div>
-				
+			
 				<div id="block_center">
 					<p class="input" style="text-align: center;">Data File Upload</p>
-					
-					<form action="./php/upload.php" method="post" enctype="multipart/form-data">			
+
+					<iframe name="hiddenFrame" class="hide"></iframe>	
+					<form action="./php/upload.php" method="post" enctype="multipart/form-data" target="hiddenFrame">	
 						<p class="input">File Load:</p>
-						<input type="text" name="fileToUpload" id="fileToUpload">
+						<input type="File" name="fileToUpload" id="fileToUpload">
 						<input type="submit" value="Upload File" name="submit">
 					</form>
 					
