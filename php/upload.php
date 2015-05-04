@@ -1,4 +1,129 @@
 <?php
+	set_time_limit(60); //60 seconds = 1 minute
+	
+	DEFINE('DBUSER','root');
+	DEFINE('DBPW','mysql');
+	DEFINE('DBHOST','localhost');
+	DEFINE('DBNAME','database_name');
+	
+	if ($dbc = mysql_connect (DBHOST, DBUSER, DBPW))
+	{
+		if (!mysql_select_db (DBNAME))
+		{
+			trigger_error("Coundn't select database MySQL Error:" . mysql_error());
+			exit();
+		} 
+	} else {
+	
+	trigger_error("Coundn't select database MySQL Error:" . mysql_error());
+	exit();
+	}
+
+	
+	
+	
+	
+	
+	
+	//START - The follow code is all for naming a file the current date and time
+	$hour =(date('H') - 05.0);
+	if ($hour < 10) 
+		$hour = "0" . $hour;
+
+	$file_prepped_for_changing = date('Y-m-d_') . $hour . date('-i-s')  .  ".txt";
+	//END - Code naming a file the current date and time
+	
+	$automatically_populated_textfile = file_get_contents("../../../examples/line-time-series/BigBlueRAW.txt");  //this will be the raw file in the future, hopefully automatically saved in some location
+	//define('DIRECTORY_SEPARATOR','//');
+	//$path='uploads'.DIRECTORY_SEPARATOR;
+
+	$file_prepped_for_changing =  '../../../examples/line-time-series/uploads/' . $file_prepped_for_changing; //$path . $file_prepped_for_changing;
+	file_put_contents($file_prepped_for_changing, $automatically_populated_textfile); //putting the contents in the file saved as today's date and current time stamp
+	
+	$lines = file($file_prepped_for_changing);
+	
+	
+	/*if (preg_match("/#/", "PHP is # the web scripting language of choice.")) {
+	echo "A match was found.";
+	} else {
+	echo "A match was not found.";
+	}*/
+		
+		foreach ($lines as $line){
+				
+			$contents = file_get_contents($file_prepped_for_changing);
+			
+			if (preg_match("/#/",$line)) {
+				$contents = str_replace($line, '', $contents);
+				file_put_contents($file_prepped_for_changing, $contents);
+				break;
+				} else {
+						$contents = str_replace($line, '', $contents);
+						file_put_contents($file_prepped_for_changing, $contents);
+						}
+			
+			}	
+			
+		$lines = file($file_prepped_for_changing);
+		$isle=0;
+		foreach ($lines as $line){
+			$line = preg_replace("/(?:\s\s+|\n|\t)/", ' ', $line);
+			$line = preg_replace("/^ +/", '', $line);
+			$unformated_date = preg_match_all("/\d{2}\/\d{2}\/\d{4}/",$line,$matches_out,PREG_PATTERN_ORDER);
+			//$unformated_date = print_r($matches_out[0]);
+			
+			//echo $matches_out[0][0];// . $matches_out[0][1] ;
+			//echo $matches_out[1][0] . $matches_out[1][1] ;
+			//echo '<br>';
+			
+			$unformated_date = strtotime($matches_out[0][0]);
+			//echo $unformated_date;
+			//echo '<br></br>';
+			$formated_date = date('Y-m-d',$unformated_date);
+			$line = preg_replace("/\d{2}\/\d{2}\/\d{4}/",$formated_date, $line);
+			//echo $line;
+			//echo '<br></br>';
+			//file_put_contents($file_prepped_for_changing, $output);
+			$result .= $line . "\n";
+			}
+		file_put_contents($file_prepped_for_changing, $result);
+	
+	
+	
+
+		//Here is where we need to see if the file is the same name and size as a previous file loaded.  Also, need have this occur only with when the Upload File button is clicked.  
+		$querytextfiletosql2 = 'LOAD DATA LOCAL INFILE "' . $file_prepped_for_changing .
+								'" REPLACE INTO TABLE table_name 
+								FIELDS TERMINATED BY " " 
+								LINES TERMINATED BY "\\n"
+								(X,Date_Table,Time_Table,VA_MAG,VB_MAG,VC_MAG,MV10,SC01,SC02,P,Q,PF,MV32,MV27) ';
+		
+		$result2 = mysql_query($querytextfiletosql2) or trigger_error('Query MySQL Error: ' . mysql_error());
+		
+		
+$queryreduceduplicates = 'CREATE TABLE table_reorganized
+SELECT X,Date_Table,Time_Table,VA_MAG,VB_MAG,VC_MAG,MV10,SC01,SC02,P,Q,PF,MV32,MV27
+FROM table_name
+ORDER BY Date_Table, Time_Table ASC;';
+$result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+
+$queryreduceduplicates = 'DELETE FROM table_name WHERE 1;';
+$result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+$queryreduceduplicates = 'INSERT INTO table_name SELECT DISTINCT X,Date_Table,Time_Table,VA_MAG,VB_MAG,VC_MAG,MV10,SC01,SC02,P,Q,PF,MV32,MV27 FROM table_reorganized; ';
+$result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+$queryreduceduplicates = 'DROP TABLE table_reorganized;';
+$result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+
+
+
+
+
+
+
 $target_dir = "../../../examples/line-time-series/uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
