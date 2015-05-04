@@ -10,6 +10,7 @@ header ("Pragma: no-cache");
 	<head>
 
 		<script language="javascript" src="calendar/calendar.js"></script>
+		<script language="javascript" src="js/main.js"></script>
 		<link href="calendar/calendar.css" rel="stylesheet" type="text/css">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
@@ -114,13 +115,19 @@ header ("Pragma: no-cache");
 	exit();
 	}
 
+	
+	
+	
+	
+	
+	
 	//START - The follow code is all for naming a file the current date and time
 	$hour =(date('H') - 05.0);
 	if ($hour < 10) 
 		$hour = "0" . $hour;
 
 	$file_prepped_for_changing = date('Y-m-d_') . $hour . date('-i-s')  .  ".txt";
-	//END - The follow code is all for naming a file the current date and time
+	//END - Code naming a file the current date and time
 	
 	$automatically_populated_textfile = file_get_contents("../../examples/line-time-series/BigBlueRAW.txt");  //this will be the raw file in the future, hopefully automatically saved in some location
 	//define('DIRECTORY_SEPARATOR','//');
@@ -180,7 +187,7 @@ header ("Pragma: no-cache");
 	
 	
 
-		
+		//Here is where we need to see if the file is the same name and size as a previous file loaded.  Also, need have this occur only with when the Upload File button is clicked.  
 		$querytextfiletosql2 = 'LOAD DATA LOCAL INFILE "' . $file_prepped_for_changing .
 								'" REPLACE INTO TABLE table_name 
 								FIELDS TERMINATED BY " " 
@@ -188,6 +195,22 @@ header ("Pragma: no-cache");
 								(X,Date_Table,Time_Table,VA_MAG,VB_MAG,VC_MAG,MV10,SC01,SC02,P,Q,PF,MV32,MV27) ';
 		
 		$result2 = mysql_query($querytextfiletosql2) or trigger_error('Query MySQL Error: ' . mysql_error());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 
 		//Querying to graph in javascript
@@ -773,13 +796,15 @@ header ("Pragma: no-cache");
 					</form>
 					
 				</div>
-			
+
+	
 				<div id="block_center">
 					<p class="input" style="text-align: center;">Data File Upload</p>
 
 					<iframe name="hiddenFrame" class="hide"></iframe>	
-					<form action="./php/upload.php" method="post" enctype="multipart/form-data" target="hiddenFrame">	
-						<p class="input">File Load:</p>
+					<form name="fileuploader" action="./php/upload.php" method="Post" enctype="multipart/form-data" target="hiddenFrame" onsubmit="return validate();">	
+						<input type="text" name="texttest"> 				
+<!--						<p class="input">File Load:</p> -->
 						<input type="File" name="fileToUpload" id="fileToUpload">
 						<input type="submit" value="Upload File" name="submit">
 					</form>
