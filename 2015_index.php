@@ -8,18 +8,24 @@ header ("Pragma: no-cache");
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/resources/demos/style.css">
+		<style>
+		.resizable { height: 260px; padding: 0.5em; }
+		.resizable h3 { text-align: center; margin: 0; }
+		</style>
+		<script>
+		$(function() {
+		$( ".resizable" ).resizable();
 
-		<script language="javascript" src="calendar/calendar.js"></script>
-		<script language="javascript" src="js/main.js"></script>
-		<link href="calendar/calendar.css" rel="stylesheet" type="text/css">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>test</title>
-		<link rel="stylesheet" href="style.css">
+		});
+		</script>
+	
+	
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script src="../../js/highcharts.js"></script>
-		<script src="../../js/modules/exporting.js"></script>
-		<style type="text/css"> ${demo.css} </style>
 	</head>
 	
 	<style>
@@ -715,20 +721,31 @@ header ("Pragma: no-cache");
 			</div> 
 			
 			
-			<div id="navigation">
+			<div class="s1">
 				<div id="container" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
 			</div> 
 			
 			
-			<div id="footer">
+			<div class="s2">
 				<div id="container2" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
 			</div>
 			
-			<div id="navigation">
+			<div class="s3">
 				<div id="container3" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
 			</div> 
 			
 		</div>
+		
+		<div class="resizable" class="ui-widget-content">
+			<h3 class="ui-widget-header">Resizable 4</h3>
+		</div>
+		<div class="resizable" class="ui-widget-content">
+			<h3 class="ui-widget-header">Resizable 5</h3>
+		</div>
+		<div class="resizable" class="ui-widget-content">
+			<h3 class="ui-widget-header">Resizable 6</h3>
+		</div>
+		
 	
 	</body>
 </html>
