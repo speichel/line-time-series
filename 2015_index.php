@@ -12,19 +12,56 @@ header ("Pragma: no-cache");
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		
+		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>  <!-- for resizable feature -->
+		<link rel="stylesheet" type="text/css" href="/css/result-light.css"> <!-- for resizable feature -->
+		
 		<link rel="stylesheet" href="/resources/demos/style.css">
 		<style>
 		.resizable { height: 260px; padding: 0.5em; }
 		.resizable h3 { text-align: center; margin: 0; }
+		<!--.container { height: 260px; padding: 0.5em; } -->
+		<!--.container h3 { text-align: center; margin: 0; } -->
 		</style>
+		
+		<style type='text/css'>  <!-- for resizable feature -->
+		#resizer {
+		border: 1px solid silver;   
+		}
+		#inner-resizer { /* make room for the resize handle */
+			padding: 10px;
+		}
+		</style>
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>  <!-- for resizable feature -->
+		<style type="text/css">  </style>  <!-- for resizable feature -->
+			
+		
+		
+		
+		
 		<script>
 		$(function() {
 		$( ".resizable" ).resizable();
+		<!--$( ".container" ).resizable(); -->
+		<!--$( ".container2" ).resizable(); -->
+		<!--$( ".container3" ).resizable(); -->
 
 		});
 		</script>
 	
 	
+		<script language="javascript" src="calendar/calendar.js"></script>		
+		<script language="javascript" src="js/main.js"></script>		
+		<link href="calendar/calendar.css" rel="stylesheet" type="text/css">		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />		
+		<title>test</title>		
+
+		<link rel="stylesheet" href="style.css">		
+		<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>		HAD TO REMOVE BECAUSE RESIZABLES DID NOT WORK-->
+		
+		<script src="../../js/highcharts.js"></script>		
+		<script src="../../js/modules/exporting.js"></script>		
+		<style type="text/css"> ${demo.css} </style>
 
 	</head>
 	
@@ -240,12 +277,27 @@ header ("Pragma: no-cache");
 	<script type="text/javascript">
 	$(function () {
 
+		var chart;
+			$('#resizer').resizable({
+				// On resize, set the chart size to that of the
+				// resizer minus padding. If your chart has a lot of data or other
+				// content, the redrawing might be slow. In that case, we recommend
+				// that you use the 'stop' event instead of 'resize'.
+				resize: function () {
+					chart.setSize(
+						this.offsetWidth - 20,
+						this.offsetHeight - 20,
+						false
+					);
+				}
+			});
+	
+	
+	
 
 		$('#container').highcharts({
 			chart: {
-				zoomType: 'x',
-				width: 1400,
-				height: 200
+				zoomType: 'x'
 			},
 			title: {
 				text: 'Voltage & Power'
@@ -354,7 +406,7 @@ header ("Pragma: no-cache");
 						]
 		});
 		
-		
+		chart = $('#container').highcharts();
 		
 		
 	});
@@ -721,17 +773,28 @@ header ("Pragma: no-cache");
 			</div> 
 			
 			
-			<div class="s1">
-				<div id="container" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
-			</div> 
-			
-			
-			<div class="s2">
-				<div id="container2" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
+			<div id="resizer" style="min-width: 500px; min-height: 200px">
+				<div id="inner-resizer">
+					<div id="container" style="height: 400px"></div>
+				</div>
 			</div>
 			
-			<div class="s3">
-				<div id="container3" style="min-width: 210px; height: 200px; margin: 0 auto"></div>
+			
+			
+		
+			
+			
+			
+			
+			
+			<div class="resizable" class="ui-widget-content">
+				<h3 class="ui-widget-header">Resizable 1</h3>
+				<div class="container2" style="margin: 0 auto"></div>
+			</div>
+			
+			<div class="resizable" class="ui-widget-content">
+				<h3 class="ui-widget-header">Resizable 1</h3>
+				<div class="container3" style="margin: 0 auto"></div>
 			</div> 
 			
 		</div>
@@ -746,6 +809,11 @@ header ("Pragma: no-cache");
 			<h3 class="ui-widget-header">Resizable 6</h3>
 		</div>
 		
+		
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.js"></script>  <!-- for resizable feature -->
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>  <!-- for resizable feature -->
+	<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>  <!-- for resizable feature -->
+	<script type="text/javascript" src="http://www.highcharts.com/samples/data/usdeur.js"></script>  <!-- for resizable feature -->
 	
 	</body>
 </html>
