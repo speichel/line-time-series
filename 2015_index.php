@@ -18,8 +18,6 @@ header ("Pragma: no-cache");
 		<style>
 		.resizable { height: 260px; padding: 0.5em; }
 		.resizable h3 { text-align: center; margin: 0; }
-		<!--.container { height: 260px; padding: 0.5em; } -->
-		<!--.container h3 { text-align: center; margin: 0; } -->
 		</style>
 		
 		<style type='text/css'>  <!-- for resizable feature -->
@@ -69,7 +67,6 @@ header ("Pragma: no-cache");
 		<!--$( ".container" ).resizable(); -->
 		<!--$( ".container2" ).resizable(); -->
 		<!--$( ".container3" ).resizable(); -->
-
 		});
 		</script>
 	
@@ -129,8 +126,6 @@ header ("Pragma: no-cache");
 	background-color: #CC00FF; 
 	padding: .05%; 
 	}
-
-
 	#content{ 
 	padding: 5px; 
 	background-color: #00CC00; 
@@ -181,8 +176,6 @@ header ("Pragma: no-cache");
 	trigger_error("Coundn't select database MySQL Error:" . mysql_error());
 	exit();
 	}
-
-
 		//Querying to graph in javascript
 		
 		//$searchable_by_post = "SELECT VA_MAG FROM table_name WHERE 'Data_Table' = '" . $DayStart  ."'";
@@ -198,21 +191,15 @@ header ("Pragma: no-cache");
 		$resultcount2 = mysql_fetch_row($limitgraph2);
 		$kt2=$resultcount2[0]-1;    
 		$i=0;
-															
+									
 		do  {    	
 			$i=$i+1;
 			} while ($i<($kt2+1));
-		echo "Count Variables:";
-		echo "<br>";	
-		echo $i;
-		echo "<br>";
-		echo $i/2000;
-		echo "<br>";
-		echo $mod_skip = ceil($i/2000);
-		echo "<br>";
+
+		$mod_skip = ceil($i/2000); 	/*echo "Count Variables: " . $i; echo "<br>"; echo "Groups of variables under: " . $i/2000 . ", rounding to next whole number: " . $mod_skip = ceil($i/2000); //For Understanding What is being put in Tables*/
 		
 		//echo $query_first_plot_VA_MAG="SELECT `VA_MAG` FROM `table_name` WHERE `Date_Table`>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "'";
-		echo $query_first_plot_VA_MAG="SET @row := 0 (SELECT * FROM (SELECT @row := @row + 1 AS rownum, VA_MAG FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)";
+		//echo $query_first_plot_VA_MAG="SET @row := 0 (SELECT * FROM (SELECT @row := @row + 1 AS rownum, VA_MAG FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)";
 		
 		mysql_query("SET @row := 0;");
 		$query_first_plot_VA_MAG = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, VA_MAG FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
@@ -237,28 +224,15 @@ header ("Pragma: no-cache");
 		
 		
 		$resultcount_1 = mysql_num_rows($query_first_plot_P);
-		echo "<br>";
-		echo "<br>";
-		echo $resultcount_1;
+
+		/*echo '<br>'; echo "Number of iterations: " . $resultcount_1; //If curious how many datapoints exist*/
+		
 		$kt2=$resultcount_1[0]-1;    
 		$i=0;
 															
 		do  {    	
 			$i=$i+1;
 			} while ($i<($kt2+1));
-		echo "<br>";
-		echo "Count Variables:";
-		echo "<br>";	
-		echo $i;
-		echo "<br>";
-		echo $i/2000;
-		echo "<br>";
-		echo $mod_skip = ceil($i/2000);
-		echo "<br>";
-
-		
-			
-			
 			
 		$query_first_plot_MV10 = mysql_query("SELECT MV10 FROM table_name");
 		while ($row = mysql_fetch_array($query_first_plot_MV10)) 
@@ -271,7 +245,6 @@ header ("Pragma: no-cache");
 		$query_first_plot_MV32 = mysql_query("SELECT MV32 FROM table_name");
 		while ($row = mysql_fetch_array($query_first_plot_MV32)) 
 			$datagraph_MV32[] = $row["MV32"];
-
 			
 			
 		$query_first_plot_PF = mysql_query("SELECT PF FROM table_name");
@@ -281,7 +254,6 @@ header ("Pragma: no-cache");
 		$query_first_plot_MV27 = mysql_query("SELECT MV27 FROM table_name");
 		while ($row = mysql_fetch_array($query_first_plot_MV27)) 
 			$datagraph_MV27[] = $row["MV27"];
-
 			
 			
 		$query_first_plot_Date_Table = mysql_query("SELECT Date_Table FROM table_name");
@@ -300,7 +272,6 @@ header ("Pragma: no-cache");
 	
 	<script type="text/javascript">
 	$(function () {
-
 		var chart;
 			$('#resizer').resizable({
 				// On resize, set the chart size to that of the
@@ -316,9 +287,6 @@ header ("Pragma: no-cache");
 				}
 			});
 	
-	
-	
-
 		$('#container').highcharts({
 			chart: {
 				zoomType: 'x'
@@ -341,10 +309,8 @@ header ("Pragma: no-cache");
 															do    {    
 																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
 																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
-
 																	if ($answer==0)    {echo ' ';}
 																	else             {echo ',';}
-
 																	$x=$x+1; $i=$i+1;
 																} while ($i<($kt2+1));
 															echo "}";
@@ -352,7 +318,6 @@ header ("Pragma: no-cache");
 						
 						
 						
-
 					
 					},
 			yAxis: {
@@ -397,7 +362,6 @@ header ("Pragma: no-cache");
 			},
 			
 			series: [{
-
 				type: 'area',
 				name: 'Voltage (kV)',
 				color: '#468499',
@@ -408,11 +372,9 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
 			},
 			{
-
 				type: 'area',
 				name: 'Power (MW)',
 				color: '#468499',
@@ -423,7 +385,6 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php echo join($datagraph_P, ',') ?> ]
 			}
 			
@@ -438,13 +399,9 @@ header ("Pragma: no-cache");
 	
 	<script type="text/javascript">
 	$(function () {
-
-
 		$('#container2').highcharts({
 			chart: {
-				zoomType: 'x',
-				width: 1400,
-				height: 200
+				zoomType: 'x'
 			},
 			title: {
 				text: 'Var Set Point & Point of Interconnection Vars & Capacitor Bank'
@@ -464,10 +421,8 @@ header ("Pragma: no-cache");
 															do    {    
 																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
 																	echo '"'; echo $datagraph_Date_Table[$x] . " " . $datagraph_Time_Table[$x]; echo '"';
-
 																	if ($answer==0)    {echo ' ';}
 																	else             {echo ',';}
-
 																	$x=$x+1; $i=$i+1;
 																} while ($i<($kt2+1));
 															echo "}";
@@ -475,7 +430,6 @@ header ("Pragma: no-cache");
 						
 						
 						
-
 					
 					},
 			yAxis: {
@@ -520,7 +474,6 @@ header ("Pragma: no-cache");
 			},
 			
 			series: [{
-
 				type: 'area',
 				name: 'Var Set Point',
 				color: '#468499',
@@ -531,11 +484,9 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php $reversedata_MV10 = array_reverse($datagraph_MV10); echo join($reversedata_MV10, ',') ?> ]
 			},
 			{
-
 				type: 'area',
 				name: 'Point of Interconnection Vars',
 				color: '#468499',
@@ -546,11 +497,9 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php $reversedata_Q= array_reverse($datagraph_Q); echo join($reversedata_Q, ',') ?> ]
 			},
 			{
-
 				type: 'area',
 				name: 'Capacitor Bank',
 				color: '#468499',
@@ -561,7 +510,6 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php $reversedata_MV32 = array_reverse($datagraph_MV32); echo join($reversedata_MV32, ',') ?> ]
 			}
 			
@@ -570,14 +518,13 @@ header ("Pragma: no-cache");
 		
 		
 		
+		chart2 = $('#container2').highcharts();
 		
 	});
 	</script>
 
 	<script type="text/javascript">
 	$(function () {
-
-
 		$('#container3').highcharts({
 			chart: {
 				zoomType: 'x',
@@ -602,10 +549,8 @@ header ("Pragma: no-cache");
 															do    {    
 																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
 																	echo '"'; echo $datagraph_Date_Table[$x] . " " . $datagraph_Time_Table[$x]; echo '"';
-
 																	if ($answer==0)    {echo ' ';}
 																	else             {echo ',';}
-
 																	$x=$x+1; $i=$i+1;
 																} while ($i<($kt2+1));
 															echo "}";
@@ -613,7 +558,6 @@ header ("Pragma: no-cache");
 						
 						
 						
-
 					
 					},
 			yAxis: {
@@ -658,7 +602,6 @@ header ("Pragma: no-cache");
 			},
 			
 			series: [{
-
 				type: 'area',
 				name: 'Power Factor (PF)',
 				color: '#468499',
@@ -669,11 +612,9 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php $reversedata_PF = array_reverse($datagraph_PF); echo join($reversedata_PF, ',') ?> ]
 			},
 			{
-
 				type: 'area',
 				name: 'Meeting Requirement',
 				color: '#468499',
@@ -684,7 +625,6 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-
 				data:  [ <?php $reversedata_MV27 = array_reverse($datagraph_MV27); echo join($reversedata_MV27, ',') ?> ]
 			}
 			
@@ -705,58 +645,42 @@ header ("Pragma: no-cache");
 			<div id="header">
 				<div id="block_left">
 					
-				<p class="input" style="text-align: center;">PLACEHOLDER</p>
-
-				<form id="form1" name="form1" method="post" action="test_calendar_value.php">
-				<table border="0" cellspacing="0" cellpadding="2">
-				<tr>
-				<td>Placeholder :</td>
+					<p class="input" style="text-align: center;">PLACEHOLDER</p>
+					<form name="blank" action="2015_index.php"method="Post" enctype="multipart/form-data">	
+						<table style="width:100%">
+							<tr>
+								<td>Something 1</td>
+								<td>Something 2</td>
+								<td>Something 3</td>
+							</tr>
+							
+							<tr>
+								<td>Something 4</td>
+								<td>Something 5</td>
+								<td>Something 6</td>
+							</tr>
+						</table>											
+					</form>
 				
-				
-				
-				
-				<td><?php
-
-				   echo "Placeholder";
-
-				 
-
-				?></td></tr><tr><td>Placeholder :</td>
-
-				<td>  <?php
-
-		
-					    
-					  echo "Placeholder";
-					
-				
-				?>  </td><td>  <input type="button" name="button2" id="button2" value="Check the value" onclick="javascript:alert('Date select from '+this.form.date3.value+' to '+this.form.date4.value);"> </td>
-				</tr>
-
-				<tr> 
-				</tr>
-				</table>
-				<p>
-
-				</p>
-			</form>
-			
-			
-
 				</div>
 				
 				<div id="block_right">   
-					<p class="input" style="text-align: center;">Date Range Temporary:</p>
+					<p class="input" style="text-align: center;">Data Range</p>
 					
 					<form action="2015_index.php" method="post">			
-						<div class="input">DayStart:</div><input type="text" id="DayStart" name="DayStart" placeholder=" <?php echo $DayStart;?> ">
-						
-						<div class="input">DayEnd:</div><input type="text" id="DayEnd" name="DayEnd" placeholder=" <?php echo $DayEnd;?> ">
-						
-					
+						<table style="width:100%">
+							<tr>
+								<td>Start Date</td>
+								<td><input type="text" id="DayStart" name="DayStart" placeholder=" <?php echo $DayStart;?> "></td>
+								<td></td>
+							</tr>
 							
-							
-						<input type="submit">
+							<tr>
+								<td>End Date</td>
+								<td><input type="text" id="DayEnd" name="DayEnd" placeholder=" <?php echo $DayEnd;?> "></td>
+								<td><input type="submit"></td>
+							</tr>
+						</table>	
 					</form>
 					
 				</div>
@@ -766,10 +690,19 @@ header ("Pragma: no-cache");
 					<p class="input" style="text-align: center;">Data File Upload</p>
 
 					<form name="fileuploader" action="./php/upload.php" method="Post" enctype="multipart/form-data" onsubmit="return validate();">	
-						<input type="text" name="texttest"> 				
-<!--						<p class="input">File Load:</p> -->
-						<input type="File" name="fileToUpload" id="fileToUpload">
-						<input type="submit" value="Upload File" name="submit">
+						<table style="width:100%">
+							<tr>
+								<td><input type="File" name="fileToUpload" id="fileToUpload"></td>
+								<td><input type="submit" value="Upload File" name="submit"></td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>											
 					</form>
 					
 				</div>
@@ -778,39 +711,30 @@ header ("Pragma: no-cache");
 			
 			<div id="resizer" style="min-width: 500px; min-height: 200px">
 				<div id="inner-resizer">
-					<div id="container" style="height: 400px"></div>
+					<div id="container" style="height: 250px"></div>
 				</div>
 			</div>
-			
-			
-			
-		
-			
-			
-			
-			
-			
-			<div class="resizable" class="ui-widget-content">
-				<h3 class="ui-widget-header">Resizable 1</h3>
-				<div class="container2" style="margin: 0 auto"></div>
+
+			<div id="resizer" style="min-width: 500px; min-height: 200px">
+				<div id="inner-resizer">
+					<div id="container2" style="height: 250px"></div>
+				</div>
 			</div>
-			
-			<div class="resizable" class="ui-widget-content">
-				<h3 class="ui-widget-header">Resizable 1</h3>
-				<div class="container3" style="margin: 0 auto"></div>
-			</div> 
-			
+
+			<div id="resizer" style="min-width: 500px; min-height: 200px">
+				<div id="inner-resizer">
+					<div id="container" style="height: 250px"></div>
+				</div>
+			</div>
+
+			<div id="resizer" style="min-width: 500px; min-height: 200px">
+				<div id="inner-resizer">
+					<div id="container" style="height: 250px"></div>
+				</div>
+			</div>
+
 		</div>
 		
-		<div class="resizable" class="ui-widget-content">
-			<h3 class="ui-widget-header">Resizable 4</h3>
-		</div>
-		<div class="resizable" class="ui-widget-content">
-			<h3 class="ui-widget-header">Resizable 5</h3>
-		</div>
-		<div class="resizable" class="ui-widget-content">
-			<h3 class="ui-widget-header">Resizable 6</h3>
-		</div>
 		
 		
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.js"></script>  <!-- for resizable feature -->
