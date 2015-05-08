@@ -1,6 +1,4 @@
 <?php
-require_once('calendar/classes/tc_calendar.php');
-
 header ( "Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0"); 
 header ("Pragma: no-cache");
 ?>
@@ -38,29 +36,25 @@ header ("Pragma: no-cache");
 			<script>
 			$(function() {
 				$( "#DayStart" ).datepicker({
-					defaultDate: "+1w",
+					dateFormat: "yy-mm-dd",
+					defaultDate: "-3m",
 					changeMonth: true,
-					numberOfMonths: 3,
+					numberOfMonths: 4,
 					onClose: function( selectedDate ) {
-					
-					
-						var date = "03/05/2013";
-						var newdate = date.split("/").reverse().join("-");
-						//$( "#DayEnd" ).newdate;
-
-						
-						//document.write(console.log(JSON.stringify(($( "#DayEnd" ).datepicker( "option", "minDate", selectedDate )),null,4)));
-						//$( "#DayEnd" ).datepicker( "option", "minDate", selectedDate );            JSON.stringify(($( "#DayEnd" ).datepicker( "option", "minDate", selectedDate )),nul,4)
+						$( "#DayEnd" ).datepicker( "option", "minDate", selectedDate  );       
 					}
 				});
 				$( "#DayEnd" ).datepicker({
-					defaultDate: "+1w",
+					dateFormat: "yy-mm-dd",
+					defaultDate: "-3m",
 					changeMonth: true,
-					numberOfMonths: 3,
+					numberOfMonths: 4,
 					onClose: function( selectedDate ) {
 						$( "#DayStart" ).datepicker( "option", "maxDate", selectedDate );
 					}
 				});
+				
+				
 			});
 			</script>
 		
@@ -711,53 +705,32 @@ header ("Pragma: no-cache");
 			<div id="header">
 				<div id="block_left">
 					
-				<p class="input" style="text-align: center;">DATA TIME RANGE</p>
+				<p class="input" style="text-align: center;">PLACEHOLDER</p>
 
 				<form id="form1" name="form1" method="post" action="test_calendar_value.php">
 				<table border="0" cellspacing="0" cellpadding="2">
 				<tr>
-				<td>Start Date :</td>
-				<td><?php
-
-				   $date3_default = "2015-04-13";
-
-				  $myCalendar = new tc_calendar("date3", true, false);
-					  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
-					  $myCalendar->setDate(date('d', strtotime($date3_default))
-							, date('m', strtotime($date3_default))
-							, date('Y', strtotime($date3_default)));
-					  $myCalendar->setPath("calendar/");
-					  $myCalendar->setYearInterval(1970, 2020);
-					  $myCalendar->setAlignment('left', 'bottom');
-					  $myCalendar->setDatePair('date3', 'date4', $date4_default);
-					  $myCalendar->writeScript();	  
-
-
-
-				?></td></tr><tr><td>End Date :</td>
-
-				<td><?php
-
-					  $date4_default = "2015-04-19";
-
-
-					  $myCalendar = new tc_calendar("date4", true, false);
-					  $myCalendar->setIcon("calendar/images/iconCalendar.gif");
-					  $myCalendar->setDate(date('d', strtotime($date4_default))
-						   , date('m', strtotime($date4_default))
-						   , date('Y', strtotime($date4_default)));
-					  $myCalendar->setPath("calendar/");
-					  $myCalendar->setYearInterval(1970, 2020);
-					  $myCalendar->setAlignment('left', 'bottom');
-					  $myCalendar->setDatePair('date3', 'date4', $date3_default);
-					  $myCalendar->writeScript();	  
-					  
-					  $theDate = isset($_REQUEST["date1"]) ? $_REQUEST["date1"] : "";
-					    
-					  echo $theDate;
-					  echo "VAlue";
+				<td>Placeholder :</td>
 				
-				?></td><td>  <input type="button" name="button2" id="button2" value="Check the value" onclick="javascript:alert('Date select from '+this.form.date3.value+' to '+this.form.date4.value);"> </td>
+				
+				
+				
+				<td><?php
+
+				   echo "Placeholder";
+
+				 
+
+				?></td></tr><tr><td>Placeholder :</td>
+
+				<td>  <?php
+
+		
+					    
+					  echo "Placeholder";
+					
+				
+				?>  </td><td>  <input type="button" name="button2" id="button2" value="Check the value" onclick="javascript:alert('Date select from '+this.form.date3.value+' to '+this.form.date4.value);"> </td>
 				</tr>
 
 				<tr> 
