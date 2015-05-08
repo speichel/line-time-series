@@ -9,14 +9,14 @@ header ("Pragma: no-cache");
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  <!-- for new calendar added 5/8/2015 -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>  <!-- for new calendar added 5/8/2015 -->
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> <!-- for new calendar added 5/8/2015 -->
+		<link rel="stylesheet" href="/resources/demos/style.css"> <!-- for new calendar added 5/8/2015 -->
 		
 		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>  <!-- for resizable feature -->
 		<link rel="stylesheet" type="text/css" href="/css/result-light.css"> <!-- for resizable feature -->
 		
-		<link rel="stylesheet" href="/resources/demos/style.css">
 		<style>
 		.resizable { height: 260px; padding: 0.5em; }
 		.resizable h3 { text-align: center; margin: 0; }
@@ -35,6 +35,36 @@ header ("Pragma: no-cache");
 		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"/>  <!-- for resizable feature -->
 		<style type="text/css">  </style>  <!-- for resizable feature -->
 			
+			<script>
+			$(function() {
+				$( "#DayStart" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 3,
+					onClose: function( selectedDate ) {
+					
+					
+						var date = "03/05/2013";
+						var newdate = date.split("/").reverse().join("-");
+						//$( "#DayEnd" ).newdate;
+
+						
+						//document.write(console.log(JSON.stringify(($( "#DayEnd" ).datepicker( "option", "minDate", selectedDate )),null,4)));
+						//$( "#DayEnd" ).datepicker( "option", "minDate", selectedDate );            JSON.stringify(($( "#DayEnd" ).datepicker( "option", "minDate", selectedDate )),nul,4)
+					}
+				});
+				$( "#DayEnd" ).datepicker({
+					defaultDate: "+1w",
+					changeMonth: true,
+					numberOfMonths: 3,
+					onClose: function( selectedDate ) {
+						$( "#DayStart" ).datepicker( "option", "maxDate", selectedDate );
+					}
+				});
+			});
+			</script>
+		
+		
 		
 		
 		
@@ -746,9 +776,9 @@ header ("Pragma: no-cache");
 					<p class="input" style="text-align: center;">Date Range Temporary:</p>
 					
 					<form action="2015_index.php" method="post">			
-						<div class="input">DayStart:</div><input type="text" name="DayStart" placeholder=" <?php echo $DayStart;?> ">
+						<div class="input">DayStart:</div><input type="text" id="DayStart" name="DayStart" placeholder=" <?php echo $DayStart;?> ">
 						
-						<div class="input">DayEnd:</div><input type="text" name="DayEnd" placeholder=" <?php echo $DayEnd;?> ">
+						<div class="input">DayEnd:</div><input type="text" id="DayEnd" name="DayEnd" placeholder=" <?php echo $DayEnd;?> ">
 						
 					
 							
