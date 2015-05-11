@@ -89,7 +89,6 @@ header ("Pragma: no-cache");
 	<style>
 	#main-wrap{ 
 	width: 1400px; 
-	height: 770px;
 	margin: auto; 
 	background-color: #FF0000; 
 	padding: 2px; 
@@ -210,7 +209,40 @@ header ("Pragma: no-cache");
 		$query_first_plot_P = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, P FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
 		while ($row = mysql_fetch_array($query_first_plot_P)) 
 			$datagraph_P[] = $row["P"];
+
+	
 		
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV10 = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV10 FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV10)) 
+			$datagraph_MV10[] = $row["MV10"];	
+			
+		mysql_query("SET @row := 0;");
+		$query_first_plot_Q = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, Q FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_Q)) 
+			$datagraph_Q[] = $row["Q"];
+		
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV32 = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV32 FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV32)) 
+			$datagraph_MV32[] = $row["MV32"];	
+		
+
+
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV27 = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV27 FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV27)) 
+			$datagraph_MV27[] = $row["MV27"];	
+			
+		mysql_query("SET @row := 0;");
+		$query_first_plot_PF = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, PF FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_PF)) 
+			$datagraph_PF[] = $row["PF"];
+
+	
+
+
+
 		mysql_query("SET @row := 0;");
 		$query_first_plot_Date_Table_1 = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, Date_Table FROM table_name WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
 		while ($row = mysql_fetch_array($query_first_plot_Date_Table_1)) 
@@ -233,28 +265,7 @@ header ("Pragma: no-cache");
 		do  {    	
 			$i=$i+1;
 			} while ($i<($kt2+1));
-			
-		$query_first_plot_MV10 = mysql_query("SELECT MV10 FROM table_name");
-		while ($row = mysql_fetch_array($query_first_plot_MV10)) 
-			$datagraph_MV10[] = $row["MV10"];
-			
-		$query_first_plot_Q = mysql_query("SELECT Q FROM table_name");
-		while ($row = mysql_fetch_array($query_first_plot_Q)) 
-			$datagraph_Q[] = $row["Q"];
-			
-		$query_first_plot_MV32 = mysql_query("SELECT MV32 FROM table_name");
-		while ($row = mysql_fetch_array($query_first_plot_MV32)) 
-			$datagraph_MV32[] = $row["MV32"];
-			
-			
-		$query_first_plot_PF = mysql_query("SELECT PF FROM table_name");
-		while ($row = mysql_fetch_array($query_first_plot_PF)) 
-			$datagraph_PF[] = $row["PF"];
-		
-		$query_first_plot_MV27 = mysql_query("SELECT MV27 FROM table_name");
-		while ($row = mysql_fetch_array($query_first_plot_MV27)) 
-			$datagraph_MV27[] = $row["MV27"];
-			
+
 			
 		$query_first_plot_Date_Table = mysql_query("SELECT Date_Table FROM table_name");
 		while ($row = mysql_fetch_array($query_first_plot_Date_Table)) 
@@ -288,6 +299,403 @@ header ("Pragma: no-cache");
 			});
 	
 		$('#container').highcharts({
+			chart: {
+				zoomType: 'x'
+			},
+			title: {
+				text: 'Voltage & Power'
+			},
+			subtitle: {
+				text: document.ontouchstart === undefined ?
+						'Click and drag in the plot area to zoom in' :
+						'Pinch the chart to zoom in'
+			},
+			xAxis:  {
+						type: 'datetime',
+						labels: {enabled:false},
+						
+						<?php
+						$kt2=$resultcount_1-1;    $x=0; $i=0;
+															echo "categories: {";
+															do    {    
+																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
+																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
+																	if ($answer==0)    {echo ' ';}
+																	else             {echo ',';}
+																	$x=$x+1; $i=$i+1;
+																} while ($i<($kt2+1));
+															echo "}";
+						?>
+						
+						
+						
+					
+					},
+			yAxis: [{
+				title: {
+					text: 'Voltage'
+				}
+			}],
+			legend: {
+				layout: 'vertical',
+				align: 'left',
+				x: 120,
+				verticalAlign: 'top',
+				y: 80,
+				floating: true,
+				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+			},
+			
+			
+			
+			
+			plotOptions: {
+				area: {
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, Highcharts.getOptions().colors[0]],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+					marker: {
+						radius: 2
+					},
+					lineWidth: 1,
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					},
+					threshold: null
+					
+				}
+			},
+			
+			series: [{
+				type: 'area',
+				name: 'Voltage (kV)',
+				color: '#800000',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#800000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Power (MW)',
+				color: '#008000',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#008000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_P, ',') ?> ]
+			}
+			
+						]
+		});
+		
+		chart = $('#container').highcharts();
+		
+		
+	});
+	</script>
+	
+	
+	<script type="text/javascript">
+	$(function () {
+		var chart2;
+			$('#resizer2').resizable({
+				// On resize, set the chart size to that of the
+				// resizer minus padding. If your chart has a lot of data or other
+				// content, the redrawing might be slow. In that case, we recommend
+				// that you use the 'stop' event instead of 'resize'.
+				resize: function () {
+					chart2.setSize(
+						this.offsetWidth - 20,
+						this.offsetHeight - 20,
+						false
+					);
+				}
+			});
+	
+		$('#container2').highcharts({
+			chart: {
+				zoomType: 'x'
+			},
+			title: {
+				text: 'Var Set Point & Point of Interconnection Vars & Capacitor Bank'
+			},
+			subtitle: {
+				text: document.ontouchstart === undefined ?
+						'Click and drag in the plot area to zoom in' :
+						'Pinch the chart to zoom in'
+			},
+			xAxis:  {
+						type: 'datetime',
+						labels: {enabled:false},
+						
+						<?php
+						$kt2=$resultcount_1-1;    $x=0; $i=0;
+															echo "categories: {";
+															do    {    
+																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
+																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
+																	if ($answer==0)    {echo ' ';}
+																	else             {echo ',';}
+																	$x=$x+1; $i=$i+1;
+																} while ($i<($kt2+1));
+															echo "}";
+						?>
+						
+						
+						
+					
+					},
+			yAxis: {
+				title: {
+					text: 'VARS'
+				}
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'left',
+				x: 120,
+				verticalAlign: 'top',
+				y: 80,
+				floating: true,
+				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+			},
+			
+			
+			
+			
+			plotOptions: {
+				area: {
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, Highcharts.getOptions().colors[0]],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+					marker: {
+						radius: 2
+					},
+					lineWidth: 1,
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					},
+					threshold: null
+					
+				}
+			},
+			
+			series: [{
+				type: 'area',
+				name: 'Var Set Point',
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [  <?php echo join($datagraph_MV10, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Point of Interconnection Vars',
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [<?php echo join($datagraph_Q, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Capacitor Bank',
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV32, ',') ?> ]
+			}
+			
+						]
+		});
+		
+		chart2 = $('#container2').highcharts();
+		
+		
+	});
+	</script>
+	
+		
+	<script type="text/javascript">
+	$(function () {
+		var chart3;
+			$('#resizer3').resizable({
+				// On resize, set the chart size to that of the
+				// resizer minus padding. If your chart has a lot of data or other
+				// content, the redrawing might be slow. In that case, we recommend
+				// that you use the 'stop' event instead of 'resize'.
+				resize: function () {
+					chart3.setSize(
+						this.offsetWidth - 20,
+						this.offsetHeight - 20,
+						false
+					);
+				}
+			});
+	
+		$('#container3').highcharts({
+			chart: {
+				zoomType: 'x'
+			},
+			title: {
+				text: 'Meeting VAR Requirement & Power Factor'
+			},
+			subtitle: {
+				text: document.ontouchstart === undefined ?
+						'Click and drag in the plot area to zoom in' :
+						'Pinch the chart to zoom in'
+			},
+			xAxis:  {
+						type: 'datetime',
+						labels: {enabled:false},
+						
+						<?php
+						$kt2=$resultcount_1-1;    $x=0; $i=0;
+															echo "categories: {";
+															do    {    
+																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
+																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
+																	if ($answer==0)    {echo ' ';}
+																	else             {echo ',';}
+																	$x=$x+1; $i=$i+1;
+																} while ($i<($kt2+1));
+															echo "}";
+						?>
+						
+						
+						
+					
+					},
+			yAxis: {
+				title: {
+					text: 'Power Factor'
+				}
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'left',
+				x: 120,
+				verticalAlign: 'top',
+				y: 80,
+				floating: true,
+				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+			},
+			
+			
+			
+			
+			plotOptions: {
+				area: {
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, Highcharts.getOptions().colors[0]],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+					marker: {
+						radius: 2
+					},
+					lineWidth: 1,
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					},
+					threshold: null
+					
+				}
+			},
+			
+			series: [{
+				type: 'area',
+				name: 'Meeting the VAR requirement for Given Power?',
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV27, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Power Factor (PF)',
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_PF, ',') ?> ]
+			}
+			
+						]
+		});
+		
+		chart3 = $('#container3').highcharts();
+		
+		
+	});
+	</script>
+	
+	
+	<script type="text/javascript">
+	$(function () {
+		var chart4;
+			$('#resizer4').resizable({
+				// On resize, set the chart size to that of the
+				// resizer minus padding. If your chart has a lot of data or other
+				// content, the redrawing might be slow. In that case, we recommend
+				// that you use the 'stop' event instead of 'resize'.
+				resize: function () {
+					chart4.setSize(
+						this.offsetWidth - 20,
+						this.offsetHeight - 20,
+						false
+					);
+				}
+			});
+	
+		$('#container4').highcharts({
 			chart: {
 				zoomType: 'x'
 			},
@@ -372,7 +780,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
+				data:  [ <?php echo join($datagraph_MV27, ',') ?> ]
 			},
 			{
 				type: 'area',
@@ -385,260 +793,21 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_P, ',') ?> ]
+				data:  [ <?php echo join($datagraph_PF, ',') ?> ]
 			}
 			
 						]
 		});
 		
-		chart = $('#container').highcharts();
+		chart4 = $('#container4').highcharts();
 		
-		
-	});
-	</script>
-	
-	<script type="text/javascript">
-	$(function () {
-		$('#container2').highcharts({
-			chart: {
-				zoomType: 'x'
-			},
-			title: {
-				text: 'Var Set Point & Point of Interconnection Vars & Capacitor Bank'
-			},
-			subtitle: {
-				text: document.ontouchstart === undefined ?
-						'Click and drag in the plot area to zoom in' :
-						'Pinch the chart to zoom in'
-			},
-			xAxis:  {
-						type: 'datetime',
-						labels: {enabled:false},
-						
-						<?php
-						$kt2=$resultcount[0]-1;    $x=0; $i=0;
-															echo "categories: {";
-															do    {    
-																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
-																	echo '"'; echo $datagraph_Date_Table[$x] . " " . $datagraph_Time_Table[$x]; echo '"';
-																	if ($answer==0)    {echo ' ';}
-																	else             {echo ',';}
-																	$x=$x+1; $i=$i+1;
-																} while ($i<($kt2+1));
-															echo "}";
-						?>
-						
-						
-						
-					
-					},
-			yAxis: {
-				title: {
-					text: 'VARS'
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'left',
-				x: 120,
-				verticalAlign: 'top',
-				y: 80,
-				floating: true,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-			},
-			
-			
-			
-			
-			plotOptions: {
-				area: {
-					fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, Highcharts.getOptions().colors[0]],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-					marker: {
-						radius: 2
-					},
-					lineWidth: 1,
-					states: {
-						hover: {
-							lineWidth: 1
-						}
-					},
-					threshold: null
-					
-				}
-			},
-			
-			series: [{
-				type: 'area',
-				name: 'Var Set Point',
-				color: '#468499',
-				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, '#468499'],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-				data:  [ <?php $reversedata_MV10 = array_reverse($datagraph_MV10); echo join($reversedata_MV10, ',') ?> ]
-			},
-			{
-				type: 'area',
-				name: 'Point of Interconnection Vars',
-				color: '#468499',
-				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, '#468499'],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-				data:  [ <?php $reversedata_Q= array_reverse($datagraph_Q); echo join($reversedata_Q, ',') ?> ]
-			},
-			{
-				type: 'area',
-				name: 'Capacitor Bank',
-				color: '#468499',
-				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, '#468499'],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-				data:  [ <?php $reversedata_MV32 = array_reverse($datagraph_MV32); echo join($reversedata_MV32, ',') ?> ]
-			}
-			
-						]
-		});
-		
-		
-		
-		chart2 = $('#container2').highcharts();
 		
 	});
 	</script>
 
-	<script type="text/javascript">
-	$(function () {
-		$('#container3').highcharts({
-			chart: {
-				zoomType: 'x',
-				width: 1400,
-				height: 200
-			},
-			title: {
-				text: 'Voltage & Power'
-			},
-			subtitle: {
-				text: document.ontouchstart === undefined ?
-						'Click and drag in the plot area to zoom in' :
-						'Pinch the chart to zoom in'
-			},
-			xAxis:  {
-						type: 'datetime',
-						labels: {enabled:false},
-						
-						<?php
-						$kt2=$resultcount[0]-1;    $x=0; $i=0;
-															echo "categories: {";
-															do    {    
-																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
-																	echo '"'; echo $datagraph_Date_Table[$x] . " " . $datagraph_Time_Table[$x]; echo '"';
-																	if ($answer==0)    {echo ' ';}
-																	else             {echo ',';}
-																	$x=$x+1; $i=$i+1;
-																} while ($i<($kt2+1));
-															echo "}";
-						?>
-						
-						
-						
-					
-					},
-			yAxis: {
-				title: {
-					text: 'PF'
-				}
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'left',
-				x: 120,
-				verticalAlign: 'top',
-				y: 80,
-				floating: true,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-			},
-			
-			
-			
-			
-			plotOptions: {
-				area: {
-					fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, Highcharts.getOptions().colors[0]],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-					marker: {
-						radius: 2
-					},
-					lineWidth: 1,
-					states: {
-						hover: {
-							lineWidth: 1
-						}
-					},
-					threshold: null
-					
-				}
-			},
-			
-			series: [{
-				type: 'area',
-				name: 'Power Factor (PF)',
-				color: '#468499',
-				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, '#468499'],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-				data:  [ <?php $reversedata_PF = array_reverse($datagraph_PF); echo join($reversedata_PF, ',') ?> ]
-			},
-			{
-				type: 'area',
-				name: 'Meeting Requirement',
-				color: '#468499',
-				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-						stops: [
-							[0, '#468499'],
-							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-						]
-					},
-				data:  [ <?php $reversedata_MV27 = array_reverse($datagraph_MV27); echo join($reversedata_MV27, ',') ?> ]
-			}
-			
-						]
-		});
-		
-		
-		
-		
-	});
-	</script>
 	
 	
-
+	
 	<body>
 	
 		<div id="main-wrap"> 
@@ -709,30 +878,30 @@ header ("Pragma: no-cache");
 			</div> 
 			
 			
-			<div id="resizer" style="min-width: 500px; min-height: 200px">
+			<div id="resizer" style="min-width: 500px; min-height: 150px">
 				<div id="inner-resizer">
-					<div id="container" style="height: 250px"></div>
+					<div id="container" style="height: 200px"></div>
 				</div>
 			</div>
 
-			<div id="resizer" style="min-width: 500px; min-height: 200px">
+			<div id="resizer2" style="min-width: 500px; min-height: 150px">
 				<div id="inner-resizer">
-					<div id="container2" style="height: 250px"></div>
+					<div id="container2" style="height: 200px"></div>
+				</div>
+			</div>
+			
+			<div id="resizer3" style="min-width: 500px; min-height: 150px">
+				<div id="inner-resizer">
+					<div id="container3" style="height: 200px"></div>
 				</div>
 			</div>
 
-			<div id="resizer" style="min-width: 500px; min-height: 200px">
+			<div id="resizer4" style="min-width: 500px; min-height: 150px">
 				<div id="inner-resizer">
-					<div id="container" style="height: 250px"></div>
+					<div id="container4" style="height: 200px"></div>
 				</div>
 			</div>
-
-			<div id="resizer" style="min-width: 500px; min-height: 200px">
-				<div id="inner-resizer">
-					<div id="container" style="height: 250px"></div>
-				</div>
-			</div>
-
+			
 		</div>
 		
 		
