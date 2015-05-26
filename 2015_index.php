@@ -12,6 +12,7 @@ header ("Pragma: no-cache");
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> <!-- for new calendar added 5/8/2015 -->
 		<link rel="stylesheet" href="/resources/demos/style.css"> <!-- for new calendar added 5/8/2015 -->
 		
+		
 		<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>  <!-- for resizable feature -->
 		<link rel="stylesheet" type="text/css" href="/css/result-light.css"> <!-- for resizable feature -->
 		
@@ -300,7 +301,7 @@ header ("Pragma: no-cache");
 	
 		$('#container').highcharts({
 			chart: {
-				zoomType: 'x'
+				zoomType: 'xy'
 			},
 			title: {
 				text: 'Voltage & Power'
@@ -324,26 +325,77 @@ header ("Pragma: no-cache");
 																	else             {echo ',';}
 																	$x=$x+1; $i=$i+1;
 																} while ($i<($kt2+1));
-															echo "}";
+															echo "},";
 						?>
 						
 						
 						
 					
 					},
-			yAxis: [{
-				title: {
-					text: 'Voltage'
-				}
-			}],
+					
+					
+			yAxis: [{ // Primary yAxis
+					labels: {
+						format: '{value} KW'
+							},
+					title: {
+						text: 'Power'
+							},
+					
+					opposite: true
+
+					}, { 
+						plotBands: [{
+							
+							from: 90000,
+							to: 93000,
+							color:'rgba(255, 255, 0, 0.5)'
+						
+						}],
+					
+					// Secondary yAxis
+							gridLineWidth: 0,
+							title: {
+								text: 'Voltage'
+							},
+							labels: {
+								format: '{value} V'
+							}
+
+						}, { // Tertiary yAxis
+							gridLineWidth: 0,
+							title: {
+								text: 'Vars'
+							},
+							labels: {
+								format: '{value} VAR'
+							}
+
+						}, { // Fourth yAxis
+					labels: {
+						format: '{value}'
+							},
+					title: {
+						text: 'PF'
+							},
+					opposite: true
+
+					}
+						],
+						tooltip: {
+            shared: true
+        },
+						
+						
 			legend: {
 				layout: 'vertical',
+				
 				align: 'left',
-				x: 120,
+				x: 200,
 				verticalAlign: 'top',
-				y: 80,
+				y: 0,
 				floating: true,
-				backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+				backgroundColor:'rgba(255, 255, 255, 0.1)'
 			},
 			
 			
@@ -374,8 +426,9 @@ header ("Pragma: no-cache");
 			
 			series: [{
 				type: 'area',
-				name: 'Voltage (kV)',
+				name: 'Voltage',
 				color: '#800000',
+				yAxis: 1,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -387,8 +440,9 @@ header ("Pragma: no-cache");
 			},
 			{
 				type: 'area',
-				name: 'Power (MW)',
+				name: 'Power (KW)',
 				color: '#008000',
+				yAxis:2,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -397,7 +451,83 @@ header ("Pragma: no-cache");
 						]
 					},
 				data:  [ <?php echo join($datagraph_P, ',') ?> ]
+			},
+	
+			{
+				type: 'area',
+				name: 'Var Set Point',
+				visible: false,
+				color: '#81d8d0',
+				yAxis:2,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#81d8d0'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [  <?php echo join($datagraph_MV10, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Point of Interconnection Vars',
+				visible: false,
+				color: '#cc0000',
+				yAxis:2,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#cc0000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [<?php echo join($datagraph_Q, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Capacitor Bank',
+				visible: false,
+				color: '#999999',
+				yAxis:2,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#999999'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV32, ',') ?> ]
+			}, 
+			{
+				type: 'area',
+				name: 'Meeting the VAR requirement for Given Power?',
+				visible: false,
+				color: '#468499',
+				yAxis:3,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV27, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Power Factor (PF)',
+				visible: false,
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_PF, ',') ?> ]
 			}
+
 			
 						]
 		});
@@ -459,11 +589,14 @@ header ("Pragma: no-cache");
 						
 					
 					},
-			yAxis: {
+			yAxis: [{
 				title: {
 					text: 'VARS'
 				}
-			},
+				}],
+					tooltip: {
+					shared: true
+							},
 			legend: {
 				layout: 'vertical',
 				align: 'left',
@@ -503,11 +636,11 @@ header ("Pragma: no-cache");
 			series: [{
 				type: 'area',
 				name: 'Var Set Point',
-				color: '#468499',
+				color: '#81d8d0',
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
-							[0, '#468499'],
+							[0, '#81d8d0'],
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
@@ -516,11 +649,11 @@ header ("Pragma: no-cache");
 			{
 				type: 'area',
 				name: 'Point of Interconnection Vars',
-				color: '#468499',
+				color: '#cc0000',
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
-							[0, '#468499'],
+							[0, '#cc0000'],
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
@@ -529,11 +662,11 @@ header ("Pragma: no-cache");
 			{
 				type: 'area',
 				name: 'Capacitor Bank',
-				color: '#468499',
+				color: '#999999',
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
-							[0, '#468499'],
+							[0, '#999999'],
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
@@ -811,7 +944,7 @@ header ("Pragma: no-cache");
 	<body>
 	
 		<div id="main-wrap"> 
-			<div id="header">
+		<div id="header">
 				<div id="block_left">
 					
 					<p class="input" style="text-align: center;">PLACEHOLDER</p>
