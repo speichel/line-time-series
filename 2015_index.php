@@ -81,6 +81,8 @@ header ("Pragma: no-cache");
 		<link rel="stylesheet" href="style.css">		
 		<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>		HAD TO REMOVE BECAUSE RESIZABLES DID NOT WORK-->
 		
+		<script src="http://code.highcharts.com/stock/highstock.js"></script>
+		<script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
 		<script src="../../js/highcharts.js"></script>		
 		<script src="../../js/modules/exporting.js"></script>		
 		<style type="text/css"> ${demo.css} </style>
@@ -89,15 +91,15 @@ header ("Pragma: no-cache");
 	
 	<style>
 	#main-wrap{ 
-	width: 1400px; 
+	width: 1550px; 
 	margin: auto; 
-	background-color: #FF0000; 
+	background-color: #eeeeee; 
 	padding: 2px; 
 	} 
 	#header{ 
 	height: 120px; 
 	margin-bottom: 2px; 
-	background-color: #0000FF; 
+	background-color: #eeeeee; 
 	padding: 5px; 
 	} 
 	#block_left{
@@ -105,7 +107,7 @@ header ("Pragma: no-cache");
 	width: 30%;   
 	float: left;
 	margin:auto auto auto auto;
-	background-color: #CC00FF; 
+	background-color: #cccccc; 
 	padding: .05%; 
 	}
 	#block_right{
@@ -113,7 +115,7 @@ header ("Pragma: no-cache");
 	width: 30%;   
 	float: right;
 	margin:auto auto auto auto;
-	background-color: #CC00FF; 
+	background-color: #cccccc; 
 	padding: .05%; 
 	}
 	#block_center{
@@ -123,7 +125,7 @@ header ("Pragma: no-cache");
 	left: 0;
 	right: 0;
 	margin:auto auto auto auto;
-	background-color: #CC00FF; 
+	background-color: #cccccc; 
 	padding: .05%; 
 	}
 	#content{ 
@@ -336,10 +338,10 @@ header ("Pragma: no-cache");
 					
 			yAxis: [{ // Primary yAxis
 					labels: {
-						format: '{value} KW'
+						format: '{value} kVAR'
 							},
 					title: {
-						text: 'Power'
+						text: 'kVAR'
 							},
 					
 					opposite: true
@@ -347,10 +349,15 @@ header ("Pragma: no-cache");
 					}, { 
 						plotBands: [{
 							
-							from: 90000,
-							to: 93000,
+							from: 94530,
+							to: 95115,
+							color:'rgba(255, 0, 0, 0.5)'
+						},{
+							from: 93816,
+							to: 95548,
 							color:'rgba(255, 255, 0, 0.5)'
 						
+
 						}],
 					
 					// Secondary yAxis
@@ -365,10 +372,10 @@ header ("Pragma: no-cache");
 						}, { // Tertiary yAxis
 							gridLineWidth: 0,
 							title: {
-								text: 'Vars'
+								text: 'kW'
 							},
 							labels: {
-								format: '{value} VAR'
+								format: '{value} kW'
 							}
 
 						}, { // Fourth yAxis
@@ -458,7 +465,7 @@ header ("Pragma: no-cache");
 				name: 'Var Set Point',
 				visible: false,
 				color: '#81d8d0',
-				yAxis:2,
+				yAxis:3,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -473,7 +480,7 @@ header ("Pragma: no-cache");
 				name: 'Point of Interconnection Vars',
 				visible: false,
 				color: '#cc0000',
-				yAxis:2,
+				yAxis:3,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -485,10 +492,9 @@ header ("Pragma: no-cache");
 			},
 			{
 				type: 'area',
-				name: 'Capacitor Bank',
+				name: 'Turbines Following?',
 				visible: false,
 				color: '#999999',
-				yAxis:2,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -500,10 +506,9 @@ header ("Pragma: no-cache");
 			}, 
 			{
 				type: 'area',
-				name: 'Meeting the VAR requirement for Given Power?',
+				name: 'Not Raising Voltage?',
 				visible: false,
 				color: '#468499',
-				yAxis:3,
 				fillColor: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
 						stops: [
@@ -515,7 +520,7 @@ header ("Pragma: no-cache");
 			},
 			{
 				type: 'area',
-				name: 'Power Factor (PF)',
+				name: 'POI PF',
 				visible: false,
 				color: '#468499',
 				fillColor: {
@@ -1013,7 +1018,7 @@ header ("Pragma: no-cache");
 			
 			<div id="resizer" style="min-width: 500px; min-height: 150px">
 				<div id="inner-resizer">
-					<div id="container" style="height: 200px"></div>
+					<div id="container" style="height:650px"></div>
 				</div>
 			</div>
 
