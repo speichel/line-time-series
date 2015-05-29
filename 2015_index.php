@@ -543,7 +543,264 @@ header ("Pragma: no-cache");
 	});
 	</script>
 	
+	<script type="text/javascript">
+	$(function () {
+		var chart;
+			$('#resizer5').resizable({
+				// On resize, set the chart size to that of the
+				// resizer minus padding. If your chart has a lot of data or other
+				// content, the redrawing might be slow. In that case, we recommend
+				// that you use the 'stop' event instead of 'resize'.
+				resize: function () {
+					chart.setSize(
+						this.offsetWidth - 20,
+						this.offsetHeight - 20,
+						false
+					);
+				}
+			});
 	
+		$('#container5').highcharts({
+			chart: {
+				zoomType: 'xy'
+			},
+			title: {
+				text: 'Voltage & Power'
+			},
+			subtitle: {
+				text: document.ontouchstart === undefined ?
+						'Click and drag in the plot area to zoom in' :
+						'Pinch the chart to zoom in'
+			},
+			xAxis:  {
+						type: 'datetime',
+						labels: {enabled:false},
+						
+						<?php
+						$kt2=$resultcount_1-1;    $x=0; $i=0;
+															echo "categories: {";
+															do    {    
+																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
+																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
+																	if ($answer==0)    {echo ' ';}
+																	else             {echo ',';}
+																	$x=$x+1; $i=$i+1;
+																} while ($i<($kt2+1));
+															echo "},";
+						?>
+						
+						
+						
+					
+					},
+					
+					
+			yAxis: [{ // Primary yAxis
+					labels: {
+						format: '{value} kVAR'
+							},
+					title: {
+						text: 'kVAR'
+							},
+					
+					opposite: true
+
+					}, { 
+						plotBands: [{
+							
+							from: 94530,
+							to: 95115,
+							color:'rgba(255, 0, 0, 0.5)'
+						},{
+							from: 93816,
+							to: 95548,
+							color:'rgba(255, 255, 0, 0.5)'
+						
+
+						}],
+					
+					// Secondary yAxis
+							gridLineWidth: 0,
+							title: {
+								text: 'Voltage'
+							},
+							labels: {
+								format: '{value} V'
+							}
+
+						}, { // Tertiary yAxis
+							gridLineWidth: 0,
+							title: {
+								text: 'kW'
+							},
+							labels: {
+								format: '{value} kW'
+							}
+
+						}, { // Fourth yAxis
+					labels: {
+						format: '{value}'
+							},
+					title: {
+						text: 'PF'
+							},
+					opposite: true
+
+					}
+						],
+						tooltip: {
+            shared: true
+        },
+						
+						
+			legend: {
+				layout: 'vertical',
+				
+				align: 'left',
+				x: 200,
+				verticalAlign: 'top',
+				y: 0,
+				floating: true,
+				backgroundColor:'rgba(255, 255, 255, 0.1)'
+			},
+			
+			
+			
+			
+			plotOptions: {
+				area: {
+					fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, Highcharts.getOptions().colors[0]],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+					marker: {
+						radius: 2
+					},
+					lineWidth: 1,
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					},
+					threshold: null
+					
+				}
+			},
+			
+			series: [{
+				type: 'area',
+				name: 'Voltage',
+				color: '#800000',
+				yAxis: 1,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#800000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Power (KW)',
+				color: '#008000',
+				yAxis:2,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#008000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_P, ',') ?> ]
+			},
+	
+			{
+				type: 'area',
+				name: 'Var Set Point',
+				visible: false,
+				color: '#81d8d0',
+				yAxis:3,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#81d8d0'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [  <?php echo join($datagraph_MV10, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Point of Interconnection Vars',
+				visible: false,
+				color: '#cc0000',
+				yAxis:3,
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#cc0000'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [<?php echo join($datagraph_Q, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'Turbines Following?',
+				visible: false,
+				color: '#999999',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#999999'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV32, ',') ?> ]
+			}, 
+			{
+				type: 'area',
+				name: 'Not Raising Voltage?',
+				visible: false,
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_MV27, ',') ?> ]
+			},
+			{
+				type: 'area',
+				name: 'POI PF',
+				visible: false,
+				color: '#468499',
+				fillColor: {
+						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						stops: [
+							[0, '#468499'],
+							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+						]
+					},
+				data:  [ <?php echo join($datagraph_PF, ',') ?> ]
+			}
+
+			
+						]
+		});
+		
+		chart = $('#container5').highcharts();
+		
+		
+	});
+	</script>	
 	<script type="text/javascript">
 	$(function () {
 		var chart2;
@@ -1018,7 +1275,13 @@ header ("Pragma: no-cache");
 			
 			<div id="resizer" style="min-width: 500px; min-height: 150px">
 				<div id="inner-resizer">
-					<div id="container" style="height:650px"></div>
+					<div id="container" style="height:315px"></div>
+				</div>
+			</div>
+
+			<div id="resizer5" style="min-width: 500px; min-height: 150px">
+				<div id="inner-resizer">
+					<div id="container5" style="height: 315px"></div>
 				</div>
 			</div>
 
