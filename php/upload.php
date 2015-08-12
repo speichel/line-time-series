@@ -23,6 +23,10 @@
 	
 $target_dir = "../../../examples/line-time-series/uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+
+
+
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
@@ -31,7 +35,7 @@ $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 if(isset($_POST["submit"])) {
     $check = filesize($_FILES["fileToUpload"]["tmp_name"]);
     if($check !== false) {
-        echo "File is OK " . $check["mime"] . ".";
+        echo "File is OK" . $check["mime"] . ". ";
         $uploadOk = 1;
     } else {
         echo "File is NOT OK. ";
@@ -86,8 +90,15 @@ if ($uploadOk == 0) {
 	//define('DIRECTORY_SEPARATOR','//');
 	//$path='uploads'.DIRECTORY_SEPARATOR;
 
+
 	$file_prepped_for_changing =  '../../../examples/line-time-series/uploads/' . $file_prepped_for_changing; //$path . $file_prepped_for_changing;
 	file_put_contents($file_prepped_for_changing, $automatically_populated_textfile); //putting the contents in the file saved as today's date and current time stamp
+	
+	
+	
+	
+	
+	
 	
 	$lines = file($file_prepped_for_changing);
 	
@@ -114,8 +125,12 @@ if ($uploadOk == 0) {
 			}	
 			
 		$lines = file($file_prepped_for_changing);
+		echo '<br><br>' . $file_prepped_for_changing . '<br>';
+		
 		$isle=0;
 		foreach ($lines as $line){
+	
+		
 			$line = preg_replace("/(?:\s\s+|\n|\t)/", ' ', $line);
 			$line = preg_replace("/^ +/", '', $line);
 			$unformated_date = preg_match_all("/\d{2}\/\d{2}\/\d{4}/",$line,$matches_out,PREG_PATTERN_ORDER);
@@ -165,6 +180,18 @@ $result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Err
 
 $queryreduceduplicates = 'DROP TABLE table_reorganized;';
 $result3 = mysql_query($queryreduceduplicates) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+
+//Identifying Out of Bounds Parameters 
+$queryoutofbounds = 'DROP TABLE outofbounds';
+$result4 = mysql_query($queryoutofbounds) or trigger_error('Query MySQL Error: ' . mysql_error());
+
+$queryoutofbounds = 'CREATE TABLE outofbounds 
+SELECT X,Date_Table,Time_Table,VA_MAG,VB_MAG,VC_MAG,MV10,SC01,SC02,P,Q,PF,MV32,MV27 
+FROM table_name 
+WHERE (PF> .95 AND P>4000 AND (abs(MV10-Q) > 2000) AND ((Q>3000) OR (Q<-3000)) AND ((VA_MAG+VB_MAG+VC_MAG)/3)<93822) 
+OR    (PF> .95 AND P>4000 AND (abs(MV10-Q) > 2000) AND ((Q>3000) OR (Q<-3000)) AND ((VA_MAG+VB_MAG+VC_MAG)/3)>95548)';
+$result4 = mysql_query($queryoutofbounds) or trigger_error('Query MySQL Error: ' . mysql_error());
 
 
 

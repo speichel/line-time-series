@@ -281,7 +281,106 @@ header ("Pragma: no-cache");
 		//This can be used for all
 		$limitgraph = mysql_query("SELECT COUNT(VA_MAG) FROM table_name");
 		$resultcount = mysql_fetch_row($limitgraph);
+
+
+//********************************************************************
+
+
+
+		$limitgraph2 = mysql_query("SELECT COUNT(VA_MAG) FROM `outofbounds` WHERE `Date_Table`>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "'");
+		$resultcount2 = mysql_fetch_row($limitgraph2);
+		$kt2=$resultcount2[0]-1;    
+		$i=0;
+									
+		do  {    	
+			$i=$i+1;
+			} while ($i<($kt2+1));
+
+		$mod_skip = ceil($i/2000); 	/*echo "Count Variables: " . $i; echo "<br>"; echo "Groups of variables under: " . $i/2000 . ", rounding to next whole number: " . $mod_skip = ceil($i/2000); //For Understanding What is being put in Tables*/
+		
+		mysql_query("SET @row := 0;");
+		$query_first_plot_VA_MAG_OOB = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, VA_MAG FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_VA_MAG_OOB)) 
+			$datagraph_VA_MAG_OOB[] = $row["VA_MAG"];	
+			
+		mysql_query("SET @row := 0;");
+		$query_first_plot_P_OOB = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, P FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_P_OOB)) 
+			$datagraph_P_OOB[] = $row["P"];
+
 	
+		
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV10_OOB = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV10 FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV10_OOB)) 
+			$datagraph_MV10_OOB[] = $row["MV10"];	
+			
+		mysql_query("SET @row := 0;");
+		$query_first_plot_Q_OOB = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, Q FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_Q_OOB)) 
+			$datagraph_Q_OOB[] = $row["Q"];
+		
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV32_OOB = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV32 FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV32_OOB)) 
+			$datagraph_MV32_OOB[] = $row["MV32"];	
+		
+
+
+		mysql_query("SET @row := 0;");
+		$query_first_plot_MV27_OOB = mysql_query("(SELECT * FROM (SELECT @row := @row + 1 AS rownum, MV27 FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0)");
+		while ($row = mysql_fetch_array($query_first_plot_MV27_OOB)) 
+			$datagraph_MV27_OOB[] = $row["MV27"];	
+			
+		mysql_query("SET @row := 0;");
+		$query_first_plot_PF_OOB = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, PF FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_PF_OOB)) 
+			$datagraph_PF_OOB[] = $row["PF"];
+
+	
+
+
+
+		mysql_query("SET @row := 0;");
+		$query_first_plot_Date_Table_1_OOB = mysql_query("SELECT * FROM (SELECT @row := @row + 1 AS rownum, Date_Table FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_Date_Table_1_OOB)) 
+			$datagraph_Date_Table_1_OOB[] = $row["Date_Table"];
+			
+		mysql_query("SET @row := 0;");	
+		$query_first_plot_Time_Table_1_OOB = mysql_query(" SELECT * FROM (SELECT @row := @row + 1 AS rownum, Time_Table FROM outofbounds WHERE Date_Table>='" . $DayStart . "' AND `Date_Table`<='" . $DayEnd . "') as DT WHERE MOD(rownum," . $mod_skip . ")=0");
+		while ($row = mysql_fetch_array($query_first_plot_Time_Table_1_OOB)) 
+			$datagraph_Time_Table_1_OOB[] = $row["Time_Table"];
+		
+		
+		
+		$resultcount_1_OOB = mysql_num_rows($query_first_plot_P_OOB);
+
+		/*echo '<br>'; echo "Number of iterations: " . $resultcount_1; //If curious how many datapoints exist*/
+		
+		$kt2=$resultcount_1_OOB[0]-1;    
+		$i=0;
+															
+		do  {    	
+			$i=$i+1;
+			} while ($i<($kt2+1));
+
+			
+		$query_first_plot_Date_Table_OOB = mysql_query("SELECT Date_Table FROM outofbounds");
+		while ($row = mysql_fetch_array($query_first_plot_Date_Table_OOB)) 
+			$datagraph_Date_Table_OOB[] = $row["Date_Table"];
+			
+		$query_first_plot_Time_Table_OOB = mysql_query("SELECT Time_Table FROM outofbounds");
+		while ($row = mysql_fetch_array($query_first_plot_Time_Table_OOB)) 
+			$datagraph_Time_Table_OOB[] = $row["Time_Table"];	
+	
+		//This can be used for all
+		$limitgraph_OOB = mysql_query("SELECT COUNT(VA_MAG) FROM outofbounds");
+		$resultcount_OOB = mysql_fetch_row($limitgraph_OOB);
+
+
+//********************************************************************************************************
+
+		
 	?>
 	
 	<script type="text/javascript">
@@ -338,10 +437,10 @@ header ("Pragma: no-cache");
 					
 			yAxis: [{ // Primary yAxis
 					labels: {
-						format: '{value} kVAR'
+						format: '{value} PF'
 							},
 					title: {
-						text: 'kVAR'
+						text: 'PF'
 							},
 					
 					opposite: true
@@ -383,7 +482,7 @@ header ("Pragma: no-cache");
 						format: '{value}'
 							},
 					title: {
-						text: 'PF'
+						text: 'kVAR'
 							},
 					opposite: true
 
@@ -451,7 +550,7 @@ header ("Pragma: no-cache");
 				color: '#008000',
 				yAxis:2,
 				fillColor: {
-						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+						linearGradient: { x1: 0, y1: -20000, x2: 0, y2: 20000},
 						stops: [
 							[0, '#008000'],
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
@@ -461,6 +560,7 @@ header ("Pragma: no-cache");
 			},
 	
 			{
+				threshold: 0,//this is for having the area fill under the curve to the zero axis, not the Y minimium 
 				type: 'area',
 				name: 'Var Set Point',
 				visible: false,
@@ -476,6 +576,8 @@ header ("Pragma: no-cache");
 				data:  [  <?php echo join($datagraph_MV10, ',') ?> ]
 			},
 			{
+				threshold: 0,//this is for having the area fill under the curve to the zero axis, not the Y minimium 
+				type: 'area',
 				type: 'area',
 				name: 'Point of Interconnection Vars',
 				visible: false,
@@ -577,11 +679,11 @@ header ("Pragma: no-cache");
 						labels: {enabled:false},
 						
 						<?php
-						$kt2=$resultcount_1-1;    $x=0; $i=0;
+						$kt2=$resultcount_1_OOB-1;    $x=0; $i=0;
 															echo "categories: {";
 															do    {    
 																	echo '"'; echo $x;    echo '": ';    $answer=($kt2-$i);
-																	echo '"'; echo $datagraph_Date_Table_1[$x] . " " . $datagraph_Time_Table_1[$x]; echo '"';
+																	echo '"'; echo $datagraph_Date_Table_1_OOB[$x] . " " . $datagraph_Time_Table_1_OOB[$x]; echo '"';
 																	if ($answer==0)    {echo ' ';}
 																	else             {echo ',';}
 																	$x=$x+1; $i=$i+1;
@@ -597,10 +699,10 @@ header ("Pragma: no-cache");
 					
 			yAxis: [{ // Primary yAxis
 					labels: {
-						format: '{value} kVAR'
+						format: '{value} PF'
 							},
 					title: {
-						text: 'kVAR'
+						text: 'PF'
 							},
 					
 					opposite: true
@@ -642,7 +744,7 @@ header ("Pragma: no-cache");
 						format: '{value}'
 							},
 					title: {
-						text: 'PF'
+						text: 'kVAR'
 							},
 					opposite: true
 
@@ -702,7 +804,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_VA_MAG, ',') ?> ]
+				data:  [ <?php echo join($datagraph_VA_MAG_OOB, ',') ?> ]
 			},
 			{
 				type: 'area',
@@ -716,7 +818,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_P, ',') ?> ]
+				data:  [ <?php echo join($datagraph_P_OOB, ',') ?> ]
 			},
 	
 			{
@@ -732,7 +834,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [  <?php echo join($datagraph_MV10, ',') ?> ]
+				data:  [  <?php echo join($datagraph_MV10_OOB, ',') ?> ]
 			},
 			{
 				type: 'area',
@@ -747,7 +849,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [<?php echo join($datagraph_Q, ',') ?> ]
+				data:  [<?php echo join($datagraph_Q_OOB, ',') ?> ]
 			},
 			{
 				type: 'area',
@@ -761,7 +863,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_MV32, ',') ?> ]
+				data:  [ <?php echo join($datagraph_MV32_OOB, ',') ?> ]
 			}, 
 			{
 				type: 'area',
@@ -775,7 +877,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_MV27, ',') ?> ]
+				data:  [ <?php echo join($datagraph_MV27_OOB, ',') ?> ]
 			},
 			{
 				type: 'area',
@@ -789,7 +891,7 @@ header ("Pragma: no-cache");
 							[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
 						]
 					},
-				data:  [ <?php echo join($datagraph_PF, ',') ?> ]
+				data:  [ <?php echo join($datagraph_PF_OOB, ',') ?> ]
 			}
 
 			
@@ -801,6 +903,7 @@ header ("Pragma: no-cache");
 		
 	});
 	</script>	
+
 	<script type="text/javascript">
 	$(function () {
 		var chart2;
